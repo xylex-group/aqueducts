@@ -761,7 +761,7 @@
           "type": "string"
         },
         "show": {
-          "description": "When set to a value of up to `usize`, will print the result of this stage to the stdout limited by the number Set value to 0 to not limit the outputs",
+          "description": "When set to a value of up to `usize`, will print the result of this stage to the stdout limited by the number Set value to 0 for unlimited output (capped at 500 rows to avoid terminal overflow)",
           "default": null,
           "type": [
             "integer",
@@ -1099,7 +1099,7 @@
           }
         },
         {
-          "description": "`Custom`: Inserts data with a prepared stament. Option to perform any number of (non-insert) preliminary statements",
+          "description": "`Custom`: Inserts data with a prepared statement. Option to perform any number of (non-insert) preliminary statements",
           "type": "object",
           "required": [
             "operation",
