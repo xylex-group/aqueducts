@@ -57,7 +57,7 @@ async fn test_delta_source_register_ok() {
     // Create and write to the table
     prepare_delta_destination(
         "test_table",
-        location.as_str(),
+        location.clone(),
         &storage_config,
         &partition_columns,
         &table_properties,
@@ -68,7 +68,7 @@ async fn test_delta_source_register_ok() {
 
     write_to_delta_destination(
         "test_table",
-        location.as_str(),
+        location.clone(),
         &datafusion::arrow::datatypes::Schema::new(arrow_schema),
         &storage_config,
         &DeltaWriteMode::Append,
@@ -124,7 +124,7 @@ async fn test_delta_destination_append_ok() {
     // Prepare the destination
     prepare_delta_destination(
         "test_table",
-        location.as_str(),
+        location.clone(),
         &storage_config,
         &partition_columns,
         &table_properties,
@@ -144,7 +144,7 @@ async fn test_delta_destination_append_ok() {
     // Write the data
     write_to_delta_destination(
         "test_table",
-        location.as_str(),
+        location.clone(),
         &datafusion::arrow::datatypes::Schema::new(arrow_schema),
         &storage_config,
         &DeltaWriteMode::Append,
@@ -156,7 +156,7 @@ async fn test_delta_destination_append_ok() {
     // Verify data was written by reading it back
     let source_config = DeltaSource {
         name: "result_table".to_string(),
-        location: aqueducts_schemas::Location(location),
+        location: aqueducts_schemas::Location(location.clone()),
         version: None,
         timestamp: None,
         storage_config: HashMap::new(),
@@ -199,7 +199,7 @@ async fn test_delta_destination_upsert_ok() {
     // Prepare the destination
     prepare_delta_destination(
         "test_table",
-        location.as_str(),
+        location.clone(),
         &storage_config,
         &partition_columns,
         &table_properties,
@@ -219,7 +219,7 @@ async fn test_delta_destination_upsert_ok() {
     // Write initial data
     write_to_delta_destination(
         "test_table",
-        location.as_str(),
+        location.clone(),
         &datafusion::arrow::datatypes::Schema::new(arrow_schema.clone()),
         &storage_config,
         &DeltaWriteMode::Upsert(vec!["col_1".to_string()]),
@@ -240,7 +240,7 @@ async fn test_delta_destination_upsert_ok() {
     // Write updated data
     write_to_delta_destination(
         "test_table",
-        location.as_str(),
+        location.clone(),
         &datafusion::arrow::datatypes::Schema::new(arrow_schema),
         &storage_config,
         &DeltaWriteMode::Upsert(vec!["col_1".to_string()]),
@@ -252,7 +252,7 @@ async fn test_delta_destination_upsert_ok() {
     // Verify the result - should have upserted 'a' and added 'd'
     let source_config = DeltaSource {
         name: "result_table".to_string(),
-        location: aqueducts_schemas::Location(location),
+        location: aqueducts_schemas::Location(location.clone()),
         version: None,
         timestamp: None,
         storage_config: HashMap::new(),
@@ -284,7 +284,7 @@ async fn test_delta_destination_replace_ok() {
     // Prepare the destination
     prepare_delta_destination(
         "test_table",
-        location.as_str(),
+        location.clone(),
         &storage_config,
         &partition_columns,
         &table_properties,
@@ -304,7 +304,7 @@ async fn test_delta_destination_replace_ok() {
     // Write replacement data
     write_to_delta_destination(
         "test_table",
-        location.as_str(),
+        location.clone(),
         &datafusion::arrow::datatypes::Schema::new(arrow_schema),
         &storage_config,
         &DeltaWriteMode::Replace(vec![ReplaceCondition {
@@ -319,7 +319,7 @@ async fn test_delta_destination_replace_ok() {
     // Verify data was written
     let source_config = DeltaSource {
         name: "result_table".to_string(),
-        location: aqueducts_schemas::Location(location),
+        location: aqueducts_schemas::Location(location.clone()),
         version: None,
         timestamp: None,
         storage_config: HashMap::new(),

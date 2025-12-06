@@ -30,6 +30,7 @@ use deltalake::{
 };
 use error::DeltaError;
 use std::sync::Arc;
+use url::Url;
 
 use crate::handlers::register_handlers;
 
@@ -55,7 +56,7 @@ pub async fn register_delta_source(
         config.location
     );
 
-    let builder = DeltaTableBuilder::from_valid_uri(config.location.as_str())?
+    let builder = DeltaTableBuilder::from_uri(config.location.0.clone())?
         .with_storage_options(config.storage_config.clone());
 
     let table = if let Some(version) = config.version {
@@ -78,7 +79,7 @@ pub async fn register_delta_source(
 /// the necessary configuration for subsequent write operations.
 pub async fn prepare_delta_destination(
     name: &str,
-    location: &str,
+    location: Url,
     storage_config: &std::collections::HashMap<String, String>,
     partition_columns: &[String],
     table_properties: &std::collections::HashMap<String, Option<String>>,
@@ -113,7 +114,7 @@ pub async fn prepare_delta_destination(
 /// and conditional replace operations based on the destination configuration.
 pub async fn write_to_delta_destination(
     name: &str,
-    location: &str,
+    location: Url,
     schema: &Schema,
     storage_config: &std::collections::HashMap<String, String>,
     write_mode: &DeltaWriteMode,
@@ -139,7 +140,7 @@ pub async fn write_to_delta_destination(
 /// Schema migration only supports adding new non-nullable columns and doesn't support modifying the table partitioning
 /// A create is always executed with `deltalake::protocol::SaveMode::Ignore` which won't fail if the table already exists
 async fn create_delta_table(
-    location: &str,
+    location: Url,
     storage_config: &std::collections::HashMap<String, String>,
     partition_columns: &[String],
     table_properties: &std::collections::HashMap<String, Option<String>>,
@@ -163,7 +164,7 @@ async fn create_delta_table(
 }
 
 async fn write_delta_table(
-    location: &str,
+    location: Url,
     table_schema: &Schema,
     storage_config: &std::collections::HashMap<String, String>,
     write_mode: &DeltaWriteMode,

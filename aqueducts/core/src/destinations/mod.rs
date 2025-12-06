@@ -232,7 +232,7 @@ pub async fn register_destination(
 
             aqueducts_delta::prepare_delta_destination(
                 &delta_dest.name,
-                delta_dest.location.as_str(),
+                delta_dest.location.0.clone(),
                 &delta_dest.storage_config,
                 &delta_dest.partition_columns,
                 &delta_dest.table_properties,
@@ -330,7 +330,7 @@ pub async fn write_to_destination(
 
             aqueducts_delta::write_to_delta_destination(
                 &delta_dest.name,
-                delta_dest.location.as_str(),
+                delta_dest.location.0.clone(),
                 &arrow_schema,
                 &delta_dest.storage_config,
                 &delta_dest.write_mode,

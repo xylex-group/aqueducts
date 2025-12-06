@@ -17,6 +17,7 @@ aqueducts-schemas.workspace = true
 datafusion.workspace = true
 thiserror.workspace = true
 tracing.workspace = true
+url.workspace = true
 
 [features]
 default = []
